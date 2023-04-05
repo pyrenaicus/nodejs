@@ -18,7 +18,8 @@ app.get("/get",(req,res) => {
 })
 
 app.post("/post",(req,res) => {
-    res.send("Soc un post");
+    //res.send("Soc un post")
+    res.json(req.body) //Retornem en forma de Json el que ens hagin enviat
 })
 
 app.put("/put",(req,res) => {
