@@ -12,7 +12,9 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-    console.log("middleware 1");
+    setTimeout(() => {
+        console.log("middleware 1");
+    },2000)
     next();
 })
 
