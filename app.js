@@ -11,11 +11,16 @@ const app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+const testFunction = () => {
+    console.log("Log from the testFunction")
+}
+
 app.use((req, res, next) => {
     setTimeout(() => {
         console.log("middleware 1");
+        testFunction()
+        next();
     },2000)
-    next();
 })
 
 app.use((req, res, next) => {
