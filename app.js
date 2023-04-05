@@ -7,8 +7,19 @@ const app = express();
 
 //Carregar rutes
 
+//Middlewares o tasques que s'han de realitzar abans de rebre la petició
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+    console.log("middleware 1");
+    next();
+})
+
+app.use((req, res, next) => {
+    console.log("middleware 2");
+    next();
+})
 
 //Configurar capçaleres
 
