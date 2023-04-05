@@ -12,15 +12,21 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 const testFunction = () => {
-    console.log("Log from the testFunction")
+    //console.log("Log from the testFunction")
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(true)
+        },3000)
+    })
 }
 
-app.use((req, res, next) => {
-    setTimeout(() => {
-        console.log("middleware 1");
-        testFunction()
+app.use( async (req, res, next) => {
+    //setTimeout(() => {
+        //console.log("middleware 1");
+        const resProm = await testFunction();
+        console.log("promise res", resProm);
         next();
-    },2000)
+    //},2000)
 })
 
 app.use((req, res, next) => {
