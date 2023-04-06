@@ -17,7 +17,18 @@ function guardarUsuari(req, res){
     usuari.email = params.email;
     usuari.clau = params.clau;
 
-    console.log(params);
+    //console.log(params);
+
+    if(usuari.nom != null && usuari.cognom != null && usuari.email != null && usuari.clau != null ){
+        var nouUsuari = usuari.save();
+            if(nouUsuari.err){
+                res.status(500).send({message: "Error al guardar l'usuari"});
+            } else {
+                res.status(200).send({usuari: nouUsuari});
+            }
+    } else {
+        res.status(402).send({message: "Indica totes les dades"});
+    }
 }
 
 module.exports = {
