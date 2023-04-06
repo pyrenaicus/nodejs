@@ -44,8 +44,19 @@ function veureUsuari(req, res){
     .catch(err => {res.status(500).send({message: "Error en la solicitud"})});  
 }
 
+function veureTotsUsuari(req, res){
+    Usuari.find()
+    //console.log(Usuari.find());
+      .then(usuari => {
+        const usuarisJSON = usuari.map(usuaris => usuaris.toObject());
+        res.status(200).send({usuaris: usuarisJSON});
+      })
+      .catch(err => {res.status(500).send({message: "Error en la solicitud"})});  
+}
+
 module.exports = {
     proves,
     guardarUsuari,
-    veureUsuari
+    veureUsuari,
+    veureTotsUsuari
 };
