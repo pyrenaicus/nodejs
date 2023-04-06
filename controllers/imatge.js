@@ -1,7 +1,9 @@
 'use strict'
 
 var Usuari = require("../models/usuari"); 
-var Imatge = require("../models/imatge")
+var Imatge = require("../models/imatge");
+var fs = require('fs'); //Pert treballar amb el sistema de fitxers
+var path = require('path');
 
 function uploadImages(req, res){
     var imatge = new Imatge(); //Instanciem l'objecte de la col·lecció imatge
@@ -48,7 +50,19 @@ function veureImatgeUsuari(req, res){
     .catch(err => {res.status(500).send({message: "Error en la solicitud"})});
 }
 
+function veureArxiuImatge(req, res){
+    var imageFile = req.params.imageFile; //Indicarem com a parametre en el slug el nom del arxiu i si existeix ens retornarà l'arxiu sense necessitat de mostrar la ruta a on esta enmagatzemat l'arxiu.
+    var path_file = './uploads/users/' + imageFile + '.png';
+    
+       if(fs.existsSync(path_file)){
+            res.sendFile(path.resolve(path_file));
+        } else {
+            res.status(404).send({message: "No existeix la imatge... " + path_file});
+        }
+}
+
 module.exports = {
     uploadImages,
-    veureImatgeUsuari
+    veureImatgeUsuari,
+    veureArxiuImatge
 };
