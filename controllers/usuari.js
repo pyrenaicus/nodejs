@@ -3,6 +3,7 @@
 var Usuari = require("../models/usuari"); 
 var bcrypt = require("bcrypt");
 var salt = 10;
+var jwt = require("../services/jwt");
 
 function proves(req, res){
     res.status(200).send({
@@ -109,6 +110,9 @@ function loginUsuari(req, res){
                     //Retornar les dades de l'usuari identificat
                     if(params.gethash){ //Si li aportem el parametre gethash generara un token amb totes les dades de l'usuari codificades
                         //Retornar un token de jwt
+                        res.status(200).send({
+                            token: jwt.createToken(usuariTrobat)
+                        })
                     } else {
                         res.status(200).send({usuari: usuariTrobat});
                     }
