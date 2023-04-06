@@ -67,10 +67,27 @@ function actualitzarUsuari(req, res){
   });
 }
 
+function borrarUsuari(req, res){
+  var usuariId = req.params.id;
+
+  Usuari.findByIdAndDelete(usuariId)
+  .then((usuariEliminat) => {
+    if (usuariEliminat) {
+        res.status(200).send({message: `El usuari ${usuariEliminat.nom} s'ha eliminat correctament.`});
+    } else {
+      res.status(404).send({message: `No s'ha pogut borrar l'usuari amb el ID ${usuariId}.`});
+    }
+  })
+  .catch((error) => {
+    res.status(500).send({message: "Error al borrar l'usuari" + error});
+  });
+}
+
 module.exports = {
     proves,
     guardarUsuari,
     veureUsuari,
     veureTotsUsuari,
-    actualitzarUsuari
+    actualitzarUsuari,
+    borrarUsuari
 };
