@@ -68,6 +68,13 @@ function borrarImatge(req, res){
     .then((imatgeEliminada) => {
       if (imatgeEliminada) {
           res.status(200).send({message: `El arxiu ${imatgeEliminada.arxiu} s'ha eliminat correctament.`});
+          var path_file = './uploads/users/' + imatgeEliminada.arxiu;
+    
+          if(fs.existsSync(path_file)){
+            fs.unlinkSync(path_file);
+          } else {
+            res.status(404).send({message: "No existeix la imatge... " + imatgeEliminada.arxiu});
+          }
       } else {
         res.status(404).send({message: `No s'ha pogut borrar l'arxiu amb el ID ${imatgeId}.`});
       }
