@@ -1,6 +1,8 @@
 'use strict'
 
 var Usuari = require("../models/usuari"); 
+var bcrypt = require("bcrypt");
+var salt = 10;
 
 function proves(req, res){
     res.status(200).send({
@@ -15,17 +17,24 @@ function guardarUsuari(req, res){
     usuari.nom = params.nom;
     usuari.cognom = params.cognom;
     usuari.email = params.email;
-    usuari.clau = params.clau;
+    usuari.clau = 123456;
 
     //console.log(params);
 
     if(usuari.nom != null && usuari.cognom != null && usuari.email != null && usuari.clau != null ){
-        var nouUsuari = usuari.save();
-            if(nouUsuari.err){
+        bcrypt.hash(params.clau, salt, function(err, clauEncriptada) {
+            usuari.clau = clauEncriptada;
+            if(err){
                 res.status(500).send({message: "Error al guardar l'usuari"});
             } else {
-                res.status(200).send({usuari: nouUsuari});
+                var nouUsuari = usuari.save();
+                if(nouUsuari.err){
+                    res.status(500).send({message: "Error al guardar l'usuari"});
+                } else {
+                    res.status(200).send({usuari: nouUsuari});
+                }
             }
+        })
     } else {
         res.status(402).send({message: "Indica totes les dades"});
     }
@@ -83,11 +92,41 @@ function borrarUsuari(req, res){
   });
 }
 
+function loginUsuari(req, res){
+    var params = req.body;
+    var email = params.email;
+    var clau = params.clau;
+
+    Usuari.findOne({email: email.toLowerCase()}) //Permet cercar un registre per una propietat i tenim que definirli una funció fletxa amb el error i l'objecte
+    .then(usuariTrobat => {
+        if(!usuariTrobat){
+            //Cal evitar donar pistes
+            res.status(404).send({message: "L'usuari no existeix"});
+        } else {
+            //Comprobar la clau
+            bcrypt.compare(clau, usuariTrobat.clau, function(err, check){
+                if(check){
+                    //Retornar les dades de l'usuari identificat
+                    if(params.gethash){ //Si li aportem el parametre gethash generara un token amb totes les dades de l'usuari codificades
+                        //Retornar un token de jwt
+                    } else {
+                        res.status(200).send({usuari: usuariTrobat});
+                    }
+                } else {
+                    res.status(404).send({message: "L'usuari no existeix"});
+                }
+            });
+        }
+    })
+    .catch(err => {res.status(500).send({message: "Error en la solicitud" + err})});  
+}
+
 module.exports = {
     proves,
     guardarUsuari,
     veureUsuari,
     veureTotsUsuari,
     actualitzarUsuari,
-    borrarUsuari
+    borrarUsuari,
+    loginUsuari
 };

@@ -20,4 +20,5 @@ api.post("/upload-image-user/:id", [md_upload], ImatgeController.uploadImages);
 api.get("/all-image-user/:id", [md_upload], ImatgeController.veureImatgeUsuari);
 api.get("/veurearxiuimatge/:imageFile", ImatgeController.veureArxiuImatge);
 api.delete("/borrarimatge/:id", ImatgeController.borrarImatge);
+api.post("/login", UsuariController.loginUsuari);
 module.exports = api;
