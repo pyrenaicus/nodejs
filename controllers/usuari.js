@@ -54,9 +54,23 @@ function veureTotsUsuari(req, res){
       .catch(err => {res.status(500).send({message: "Error en la solicitud"})});  
 }
 
+function actualitzarUsuari(req, res){
+    var usuariId = req.params.id;
+    var update = req.body;
+
+    Usuari.findByIdAndUpdate(usuariId, update)
+  .then(result => {
+    res.status(200).send({usuari: result}); // El documento actualizado
+  })
+  .catch(error => {
+    res.status(500).send({message: "Error al actualitzar l'usuari" + error}); // Captura y maneja cualquier error que ocurra
+  });
+}
+
 module.exports = {
     proves,
     guardarUsuari,
     veureUsuari,
-    veureTotsUsuari
+    veureTotsUsuari,
+    actualitzarUsuari
 };
