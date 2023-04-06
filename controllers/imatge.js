@@ -61,8 +61,25 @@ function veureArxiuImatge(req, res){
         }
 }
 
+function borrarImatge(req, res){
+    var imatgeId = req.params.id;
+  
+    Imatge.findByIdAndDelete(imatgeId)
+    .then((imatgeEliminada) => {
+      if (imatgeEliminada) {
+          res.status(200).send({message: `El arxiu ${imatgeEliminada.arxiu} s'ha eliminat correctament.`});
+      } else {
+        res.status(404).send({message: `No s'ha pogut borrar l'arxiu amb el ID ${imatgeId}.`});
+      }
+    })
+    .catch((error) => {
+      res.status(500).send({message: "Error al borrar l'imatge " + error});
+    });
+  }
+
 module.exports = {
     uploadImages,
     veureImatgeUsuari,
-    veureArxiuImatge
+    veureArxiuImatge,
+    borrarImatge
 };
