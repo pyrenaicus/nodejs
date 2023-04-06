@@ -31,7 +31,21 @@ function guardarUsuari(req, res){
     }
 }
 
+function veureUsuari(req, res){
+    var params = req.body;
+
+    var email = params.email;
+    //var clau = params.clau;
+
+    Usuari.findOne({email: email.toLowerCase()}) //Permet cercar un registre per una propietat i tenim que definirli una funció fletxa amb el error i l'objecte
+    .then(usuariTrobat => {
+        res.status(200).send({usuaris: usuariTrobat})
+    })
+    .catch(err => {res.status(500).send({message: "Error en la solicitud"})});  
+}
+
 module.exports = {
     proves,
-    guardarUsuari
+    guardarUsuari,
+    veureUsuari
 };
