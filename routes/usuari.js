@@ -13,7 +13,7 @@ var md_upload = multipart({ uploadDir: './uploads/users'});
 
 api.get("/tots", UsuariController.proves);
 api.post("/registre", UsuariController.guardarUsuari);
-api.post("/veureusuari", UsuariController.veureUsuari);
+api.post("/veureusuari", [md_auth.ensureAuth], UsuariController.veureUsuari);
 api.get("/veuretotsusuari", UsuariController.veureTotsUsuari);
 api.put("/actualitzar-usuari/:id", UsuariController.actualitzarUsuari);
 api.delete("/borrarusuari/:id", UsuariController.borrarUsuari);
