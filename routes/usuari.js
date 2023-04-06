@@ -17,4 +17,5 @@ api.get("/veuretotsusuari", UsuariController.veureTotsUsuari);
 api.put("/actualitzar-usuari/:id", UsuariController.actualitzarUsuari);
 api.delete("/borrarusuari/:id", UsuariController.borrarUsuari);
 api.post("/upload-image-user/:id", [md_upload], ImatgeController.uploadImages);
+api.get("/all-image-user/:id", [md_upload], ImatgeController.veureImatgeUsuari);
 module.exports = api;

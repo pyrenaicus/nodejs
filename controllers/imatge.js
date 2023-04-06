@@ -37,6 +37,18 @@ function uploadImages(req, res){
     }
 }
 
+function veureImatgeUsuari(req, res){
+    var idUsuari = req.params.id;
+
+    Imatge.find({usuari: idUsuari}) //Permet cercar un registre per una propietat i tenim que definirli una funció fletxa amb el error i l'objecte
+    .then(imatgesTrobades => {
+        const imatgesJSON = imatgesTrobades.map(imatges => imatges.toObject());
+        res.status(200).send({imatges: imatgesJSON});
+    })
+    .catch(err => {res.status(500).send({message: "Error en la solicitud"})});
+}
+
 module.exports = {
-    uploadImages
+    uploadImages,
+    veureImatgeUsuari
 };
